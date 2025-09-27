@@ -14,17 +14,17 @@ let house;
 
 // якщо показники дуже низькі — схоже, без магії :) => магл
 if (magicScore <= 12 || (bravery <= 3 && ambition <= 3 && wisdom <= 3 && loyalty <= 3)) {
-  house = "Muggle (магл 🙃";
+    house = 'Muggle (магл 🙃';
 } else if (bravery >= 7 && ambition < 7) {
-  house = "Gryffindor 🔴";             // сюди, коли хоробра більше за все
+    house = 'Gryffindor 🔴';             // сюди, коли хоробра більше за все
 } else if (ambition >= 7 && loyalty <= 5) {
-  house = "Slytherin 🟢";              // амбіції перемагають, відданість нижча
+    house = 'Slytherin 🟢';              // амбіції перемагають, відданість нижча
 } else if (wisdom >= 7 || (bravery < 7 && loyalty < 7)) {
-  house = "Ravenclaw 🔵";              // розум високий або мікс умов нижче
+    house = 'Ravenclaw 🔵';              // розум високий або мікс умов нижче
 } else {
-  house = "Hufflepuff 🟡";             // решта кейсів сюди
+    house = 'Hufflepuff 🟡';             // решта кейсів сюди
 }
 
 console.log(
-  `bravery=${bravery}, ambition=${ambition}, wisdom=${wisdom}, loyalty=${loyalty}, magicScore=${magicScore} -> факультет: ${house}`
+    `bravery=${bravery}, ambition=${ambition}, wisdom=${wisdom}, loyalty=${loyalty}, magicScore=${magicScore} -> факультет: ${house}`
 );
