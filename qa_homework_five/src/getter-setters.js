@@ -11,7 +11,7 @@ const library = {
         { title: 'Fantastic Beasts', author: 'Newt Scamander', rating: 4.8 }
     ],
 
-    // getter/setter для назви бібліотеки з автокейсингом
+    // getter/setter для назви бібліотеки
     get name() {
         return this._name;
     },
