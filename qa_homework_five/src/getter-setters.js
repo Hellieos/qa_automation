@@ -30,18 +30,23 @@ const library = {
         return +(sum / this._books.length).toFixed(2);
     },
 
-    // setter для додавання книги
-    set addBook(book) {
-        if (!book || typeof book.title !== 'string' || typeof book.author !== 'string') {
-            console.warn('addBook: некоректна книга');
+    // setter для оновлення існуючої книги (без розширення масиву)
+    set book(newBook) {
+        if (!newBook || typeof newBook.title !== 'string' || typeof newBook.author !== 'string') {
+            console.warn('book: некоректна книга');
             return;
         }
-        const rating = Number(book.rating);
-        this._books.push({
-            title: book.title.trim(),
-            author: book.author.trim(),
+        const idx = this._books.length - 1;// перезаписую останню наявну книгу
+        if (idx < 0) {
+            console.warn('book: немає книжок для оновлення');
+            return;
+        }
+        const rating = Number(newBook.rating);
+        this._books[idx] = {
+            title: newBook.title.trim(),
+            author: newBook.author.trim(),
             rating: Number.isFinite(rating) ? rating : 0
-        });
+        };
     },
 
     // метод > повертає коротке самері
@@ -62,8 +67,9 @@ console.log(library.summary());
 library.printTitles();
 
 library.name = 'Hogwarts Grand Library';
-library.addBook = { title: 'Defence Against the Dark Arts', author: 'Various', rating: 4.2 };
-library.addBook = { title: 'History of Magic', author: 'Bathilda Bagshot', rating: 4.0 };
+library.book = { title: 'Defence Against the Dark Arts', author: 'Various', rating: 4.2 };
+library.book = { title: 'History of Magic', author: 'Bathilda Bagshot', rating: 4.0 };
+console.log('Updated _books array:', library._books);
 
 console.log(library.summary());
 library.printTitles();
