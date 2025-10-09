@@ -30,23 +30,12 @@ const library = {
         return +(sum / this._books.length).toFixed(2);
     },
 
-    // setter для оновлення існуючої книги (без розширення масиву)
-    set book(newBook) {
-        if (!newBook || typeof newBook.title !== 'string' || typeof newBook.author !== 'string') {
+    // setter для перевірки книги (валідація, без змін масиву)
+    set book(value) {
+        if (!value || typeof value.title !== 'string' || typeof value.author !== 'string') {
             console.warn('book: некоректна книга');
             return;
         }
-        const idx = this._books.length - 1;// перезаписую останню наявну книгу
-        if (idx < 0) {
-            console.warn('book: немає книжок для оновлення');
-            return;
-        }
-        const rating = Number(newBook.rating);
-        this._books[idx] = {
-            title: newBook.title.trim(),
-            author: newBook.author.trim(),
-            rating: Number.isFinite(rating) ? rating : 0
-        };
     },
 
     // метод > повертає коротке самері
@@ -67,9 +56,12 @@ console.log(library.summary());
 library.printTitles();
 
 library.name = 'Hogwarts Grand Library';
+
+// ці виклики лише перевіряють валідність книги, не змінюючи масив
 library.book = { title: 'Defence Against the Dark Arts', author: 'Various', rating: 4.2 };
 library.book = { title: 'History of Magic', author: 'Bathilda Bagshot', rating: 4.0 };
-console.log('Updated _books array:', library._books);
+
+console.log('Books were not modified, current _books array:', library._books);
 
 console.log(library.summary());
 library.printTitles();
