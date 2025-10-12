@@ -32,4 +32,4 @@ async function main() {
     }
 }
 
-main(); // викликаю функцію
+await main(); // викликаю функцію
