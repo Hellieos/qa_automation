@@ -11,6 +11,9 @@ const library = {
         { title: 'Fantastic Beasts', author: 'Newt Scamander', rating: 4.8 }
     ],
 
+    // зберігаємо останню перевірену / сетовану книгу окремо
+    _lastBook: null,
+
     // getter/setter для назви бібліотеки
     get name() {
         return this._name;
@@ -30,12 +33,29 @@ const library = {
         return +(sum / this._books.length).toFixed(2);
     },
 
-    // setter для перевірки книги (валідація, без змін масиву)
-    set book(value) {
+    // ✅ getter/setter для останньої книги (без зміни масиву)
+    get lastBook() {
+        return this._lastBook;
+    },
+    set lastBook(value) {
         if (!value || typeof value.title !== 'string' || typeof value.author !== 'string') {
-            console.warn('book: некоректна книга');
+            console.warn('lastBook: некоректна книга');
             return;
         }
+
+        const book = {
+            title: value.title.trim(),
+            author: value.author.trim(),
+            rating: Number(value.rating) || 0
+        };
+
+        if (!book.title || !book.author) {
+            console.warn('lastBook: порожні поля після нормалізації');
+            return;
+        }
+
+        // Не змінюємо масив
+        this._lastBook = book;
     },
 
     // метод > повертає коротке самері
@@ -51,20 +71,18 @@ const library = {
     }
 };
 
-// використання гетерів, сетерів та методів
+// використання
 console.log(library.summary());
 library.printTitles();
 
 library.name = 'Hogwarts Grand Library';
 
-// ці виклики лише перевіряють валідність книги, не змінюючи масив
-library.book = { title: 'Defence Against the Dark Arts', author: 'Various', rating: 4.2 };
-library.book = { title: 'History of Magic', author: 'Bathilda Bagshot', rating: 4.0 };
+// цей виклик лише перевіряє й зберігає останню книгу, не змінюючи масив
+library.lastBook = { title: 'Defence Against the Dark Arts', author: 'Various', rating: 4.2 };
 
-console.log('Books were not modified, current _books array:', library._books);
+// гетер повертає останню перевірену книгу
+console.log('Last checked book:', library.lastBook);
 
+// масив лишається без змін
+console.log('Books array:', library._books);
 console.log(library.summary());
-library.printTitles();
-
-// доступ до вкладених значень (2-й рівень)
-console.log('City:', library.address.city);
