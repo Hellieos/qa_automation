@@ -27,8 +27,8 @@ async function sendImprovisedApiRequest() {
         console.warn('Основний запит не вдався:', err.message);
 
         // пробую запасний
-        if (err.message.includes('Погана відповід')) {
-            return await fetchWithCheck(GOOD_BACKUP_URL );
+        if (err.message.includes('Погана відповідь')) {
+            return await fetchWithCheck(GOOD_BACKUP_URL);
         } else {
             throw err;
         }
@@ -44,7 +44,7 @@ async function initializeTestData() {
     }
 }
 
-// викликаємо кілька разів, щоб побачити, як все працює
+// викликаю, щоб побачити, як все працює
 (async () => {
     await initializeTestData();
 })();
