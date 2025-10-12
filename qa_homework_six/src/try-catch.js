@@ -21,9 +21,7 @@ async function fetchWithCheck(url) {
 async function sendImprovisedApiRequest() {
     console.log('\nВідправляю API-запит');
     try {
-        console.log(`Пробую основний запит: ${INVALID_URL}`);
-        const primaryResult = await fetchWithCheck(INVALID_URL);
-        console.log('Основний запит успішно відпрацював:', primaryResult);
+        return await fetchWithCheck(INVALID_URL);
     } catch (err) {
     // якщо основний впав — ловлю помилку
         console.warn('Основний запит не вдався:', err.message);
