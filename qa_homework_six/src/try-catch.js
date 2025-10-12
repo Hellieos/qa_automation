@@ -45,7 +45,6 @@ async function initializeTestData() {
 }
 
 // викликаємо кілька разів, щоб побачити, як все працює
-(async function runAll() {
-    await initializeTestData();
+(async () => {
     await initializeTestData();
 })();
