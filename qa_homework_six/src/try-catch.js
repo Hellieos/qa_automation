@@ -27,18 +27,10 @@ async function sendImprovisedApiRequest() {
         console.warn('Основний запит не вдався:', err.message);
 
         // пробую запасний
-        try {
-            console.log(`Пробую запасний запит: ${GOOD_BACKUP_URL}`);
-            const backupResult = await fetchWithCheck(GOOD_BACKUP_URL);
-            console.log('Запасний запит спрацював! Кілька перших записів:');
-            backupResult.slice(0, 3).forEach(item =>
-                console.log(`- [${item.id}] ${item.title} (completed: ${item.completed})`)
-            );
-        } catch (err2) {
-        // якщо запасний впав — кидаю кастомну помилку
-            const customErr = new Error(`Обидва запити не спрацювали. Остання помилка: ${err2.message}`);
-            console.error(customErr.message);
-            throw customErr; // передаю далі, щоб її можна було спіймати вище
+        if (err.message.includes('Погана відповід')) {
+            return await fetchWithCheck(GOOD_BACKUP_URL );
+        } else {
+            throw err;
         }
     }
 }
