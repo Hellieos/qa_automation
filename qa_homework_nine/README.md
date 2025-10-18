@@ -11,3 +11,13 @@ npm run build
 npm start
 
 npm run clean (for cleaning the build)
+
+### Run tests
+> run only Mocha (class methods)
+npm run test:mocha
+
+> run only Vitest (functions)
+npm run test:vitest
+
+> run both
+npm test
