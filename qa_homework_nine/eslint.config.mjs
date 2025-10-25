@@ -6,11 +6,12 @@ import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 export default tsEslint.config({
     files: ['**/*.ts'],
     languageOptions: {
-        parserOptions: {
-            project: true,
-            tsconfigRootDir: process.cwd(),
-        },
+    parser: tsEslint.parser,
+    parserOptions: {
+        project: ['./tsconfig.eslint.json'],
+        tsconfigRootDir: process.cwd(),
     },
+},
     plugins: {
         '@stylistic': stylistic,
         unicorn: eslintPluginUnicorn

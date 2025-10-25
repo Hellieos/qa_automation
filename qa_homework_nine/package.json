@@ -9,20 +9,30 @@
   "scripts": {
     "clean": "rimraf build",
     "build": "tsc",
-    "start": "node build/index.js"
-  }, 
+    "start": "node build/index.js",
+
+    "test:mocha": "mocha -r ts-node/register \"test/mocha/**/*.spec.ts\"",
+    "test:vitest": "vitest run",
+    "test": "npm run test:mocha && npm run test:vitest"
+  },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
     "@stylistic/eslint-plugin": "^5.5.0",
     "@stylistic/eslint-plugin-ts": "^4.4.1",
+    "@types/chai": "^5.2.2",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^24.8.1",
+    "chai": "^6.2.0",
     "eslint": "^9.38.0",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-unicorn": "^61.0.2",
     "globals": "^16.4.0",
+    "mocha": "^11.7.4",
     "prettier": "^3.6.2",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.1"
+    "typescript-eslint": "^8.46.1",
+    "vitest": "^3.2.4"
   }
 }
