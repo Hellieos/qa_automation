@@ -1,0 +1,40 @@
+{
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "eslint.config.mjs",
+    "./build/**/*",
+    "./node_modules/**/*"
+  ],
+  "compilerOptions": {
+    // Project paths
+    "baseUrl": "./",
+    "rootDir": "src",
+    "outDir": "dist",
+
+    // Modern ECMAScript setup
+    "target": "ES2020",
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+
+    // Libraries (includes DOM types for fetch)
+    "lib": ["ES2020", "DOM"],
+
+    // Language and features
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+
+    // Type checking & safety
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+
+    // Type definitions
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  }
+}
