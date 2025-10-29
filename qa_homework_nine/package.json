@@ -10,13 +10,13 @@
     "clean": "rimraf build",
     "build": "tsc",
     "start": "node build/index.js",
-
     "test:mocha": "mocha -r ts-node/register \"test/mocha/**/*.spec.ts\"",
     "test:vitest": "vitest run",
     "test": "npm run test:mocha && npm run test:vitest"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
+    "@faker-js/faker": "^10.1.0",
     "@stylistic/eslint-plugin": "^5.5.0",
     "@stylistic/eslint-plugin-ts": "^4.4.1",
     "@types/chai": "^5.2.2",
