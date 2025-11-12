@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { CatApi } from '../src/cat-service';
 
 describe('TheCatAPI integration: images → votes → favourites', function () {
-    this.timeout(20000);
+    this.timeout(30000);
     const api = new CatApi();
 
     let imageId = '';
@@ -27,14 +27,31 @@ describe('TheCatAPI integration: images → votes → favourites', function () {
         expect(res).to.have.property('id');
     });
 
-    it('4) verifies both linked to same image', async () => {
-        const [votes, favs] = await Promise.all([api.listVotes(), api.listFavourites()]);
-        expect(votes.some(v => v.image_id === imageId)).to.be.true;
-        expect(favs.some(f => f.image_id === imageId)).to.be.true;
+    it('4) verifies both linked to same image and pull image object by ID', async () => {
+        // прошу API включити об'єкт image у відповіді
+        const [votes, favs] = await Promise.all([api.listVotes(true), api.listFavourites(true)]);
+
+        const myVote = votes.find(v => v.id === voteId);
+        const myFav = favs.find(f => f.id === favouriteId);
+
+        // зв’язок за image_id
+        expect(myVote?.image_id).to.equal(imageId);
+        expect(myFav?.image_id).to.equal(imageId);
+
+        // у відповіді присутній вкладений image-об'єкт саме з тим ID і валідним URL
+        expect(myVote?.image).to.include.keys('id', 'url');
+        expect(myVote?.image?.id).to.equal(imageId);
+        expect(myVote?.image?.url).to.match(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i);
+
+        expect(myFav?.image).to.include.keys('id', 'url');
+        expect(myFav?.image?.id).to.equal(imageId);
+        expect(myFav?.image?.url).to.match(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp)$/i);
     });
 
     it('5) cleanup', async () => {
-        if (favouriteId) await api.deleteFavourite(favouriteId);
-        if (voteId) await api.deleteVote(voteId);
+        const ops: Promise<unknown>[] = [];
+        if (favouriteId != null) ops.push(api.deleteFavourite(favouriteId).catch(() => { /* empty */ }));
+        if (voteId != null) ops.push(api.deleteVote(voteId).catch(() => { /* empty */ }));
+        await Promise.allSettled(ops);
     });
 });
