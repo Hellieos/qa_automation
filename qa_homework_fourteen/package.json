@@ -1,0 +1,37 @@
+{
+  "name": "qa_homework_fourteen",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@stylistic/eslint-plugin": "^5.5.0",
+    "@stylistic/eslint-plugin-ts": "^4.4.1",
+    "@types/dotenv-safe": "^9.1.0",
+    "@types/form-data": "^2.2.1",
+    "@types/node": "^24.10.0",
+    "dotenv-safe": "^9.1.0",
+    "eslint": "^9.39.1",
+    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-unicorn": "^62.0.0",
+    "formdata-node": "^6.0.3",
+    "globals": "^16.5.0",
+    "playwright": "^1.56.1",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3",
+    "vitest": "^4.0.8"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "cross-fetch": "^4.1.0"
+  }
+}
