@@ -39,21 +39,17 @@ a[href="/logout"]
 ## 2. XPath-селектори
 
 ```xpath
-//input[@id='username']                          → поле логіну
-//input[@id='password']                          → поле пароля
-//*[@id='login']                                 → контейнер форми
-//*[@id='login']//button[@type='submit']         → кнопка Login
-//div[@id='flash-message']                       → повідомлення
-//div[@id='flash-message' and contains(., 'You logged into a secure area!')]
-                                                 → успішний логін
-//h2[contains(text(), 'Secure Area')]                         
-//h4[contains(text(), 'Welcome to the Secure Area')]
-//a[@href='/logout']                             → кнопка Logout
-                                                 → успішний логін   
-//div[@id='flash-message' and contains(., 'Invalid password.')]
-                                                 → неправильний пароль
-//div[@id='flash-message' and contains(., 'Invalid username.')]
-                                                 → неправильний логін
+//input[@id='username']                                                      → поле логіну
+//input[@id='password']                                                      → поле пароля
+//*[@id='login']                                                             → контейнер форми
+//*[@id='login']//button[@type='submit']                                     → кнопка Login
+//div[@id='flash-message']                                                   → повідомлення
+//div[@id='flash-message' and contains(., 'You logged into a secure area!')] → успішний логін
+//h2[contains(text(), 'Secure Area')]                                        → успішний логін                      
+//h4[contains(text(), 'Welcome to the Secure Area')]                         → успішний логін  
+//a[@href='/logout']                                                         → кнопка Logout                                         
+//div[@id='flash-message' and contains(., 'Invalid password.')]              → неправильний пароль
+//div[@id='flash-message' and contains(., 'Invalid username.')]              → неправильний логін
 ```
 ---
 
