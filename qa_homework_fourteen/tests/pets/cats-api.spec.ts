@@ -10,7 +10,7 @@ describe('HW13 → TheCatAPI (votes & favourites)', () => {
     beforeAll(async () => {
         api = new CatApi();
 
-        // get one image to reuse in all tests
+        // та сама image перевикористана в подальших тестах
         randomImage = await api.getRandomImage();
         expect(randomImage.id).toBeDefined();
         expect(randomImage.url).toMatch(/^https?:\/\//);
