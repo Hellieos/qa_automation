@@ -1,0 +1,41 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node.js
+node_modules/
+./node_modules
+node_modules
+npm-debug.log
+
+# Logs
+*.log
+
+# IDEs
+.vscode/
+.idea/
+
+# Build
+build/
+dist/
+dist
+tsconfig.tsbuildinfo
+
+# TypeScript output
+src/**/*.js
+src/**/*.js.map
+src/**/*.d.ts
+
+# Environment
+.env
+
+# Pact
+.pacts
+pacts
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
