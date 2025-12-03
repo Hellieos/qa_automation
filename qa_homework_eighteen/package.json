@@ -6,7 +6,12 @@
   "author": "",
   "type": "commonjs",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:bookstore": "playwright test tests/bookstore-list.spec.ts",
+    "test:book": "playwright test tests/book-details-cart.spec.ts",
+    "test:login": "playwright test tests/login.spec.ts"
+  },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@playwright/test": "^1.57.0",
