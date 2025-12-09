@@ -8,7 +8,6 @@ test.describe('Login page', () => {
         await loginPage.goto();
     });
 
-    // Тест-кейс 1: Успішний логін з валідними даними
     test('успішний логін з валідними даними', async ({ page, loginPage, securePage }): Promise<void> => {
         await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
 
@@ -18,7 +17,6 @@ test.describe('Login page', () => {
         );
     });
 
-    // Тест-кейс 2: Логін з порожніми полями
     test('логін з порожніми полями', async ({ page, loginPage }): Promise<void> => {
         await loginPage.login('', '');
 
@@ -36,7 +34,6 @@ test.describe('Secure area', () => {
         await expect(page).toHaveURL(`${process.env.BASE_URL}/secure`);
     });
 
-    //Тест-кейс 3: Перевірка контенту захищеної сторінки після логіну
     test('перевірка контенту захищеної сторінки після логіну: logout наявний', async ({ securePage }): Promise<void> => {
         await expect(securePage.getFlashMessageLocator()).toBeVisible();
         await expect(securePage.getLogoutLinkLocator()).toBeVisible();
@@ -45,7 +42,6 @@ test.describe('Secure area', () => {
         );
     });
 
-    //Тест-кейс 4: Логаут із захищеної сторінки
     test('логаут із захищеної сторінки', async ({ page, securePage, loginPage }): Promise<void> => {
         await securePage.logout();
 
