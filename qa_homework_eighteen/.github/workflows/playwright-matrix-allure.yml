@@ -1,0 +1,64 @@
+name: Playwright Matrix + Allure
+
+on:
+  push:
+    branches: [ main, homework_22 ]
+  pull_request:
+    branches: [ main, homework_22 ]
+
+jobs:
+  playwright-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        suite: [ "bookstore", "book", "login" ]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      # Запуск одного з трьох наборів тестів:
+      # npm run test:bookstore
+      # npm run test:book
+      # npm run test:login
+      - name: "Run test suite: ${{ matrix.suite }}"
+        run: npm run test:${{ matrix.suite }}
+
+      # Встановлюю Allure CLI (щоб генерувати репорт у CI)
+      - name: Install Allure CLI
+        run: npm install -g allure-commandline --save-dev
+
+      # Генерую Allure репорт для кожного suite в окрему папку
+      - name: Generate Allure report for ${{ matrix.suite }}
+        run: |
+          mkdir -p allure-report/${{ matrix.suite }}
+          allure generate ./allure-results --clean -o ./allure-report/${{ matrix.suite }}
+
+      # Зберігаю сирі allure-results як artifact
+      - name: Upload allure-results (${{ matrix.suite }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.suite }}
+          path: allure-results
+          retention-days: 30
+
+      # Зберігаю готовий HTML-репорт як artifact
+      - name: Upload allure-report (${{ matrix.suite }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ matrix.suite }}
+          path: allure-report/${{ matrix.suite }}
+          retention-days: 30
