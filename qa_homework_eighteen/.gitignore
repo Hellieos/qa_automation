@@ -39,3 +39,5 @@ pacts
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+/allure-results
+/allure-report
