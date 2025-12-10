@@ -16,6 +16,15 @@ on:
       - 'qa_homework_eighteen/**'
       - '.github/workflows/playwright-matrix-allure.yml'
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
   playwright-tests:
     runs-on: ubuntu-latest
@@ -84,3 +93,57 @@ jobs:
           # same here – prefix with project folder
           path: qa_homework_eighteen/allure-report/${{ matrix.suite }}
           retention-days: 30
+
+# pages job
+  publish-allure:
+    needs: playwright-tests
+    runs-on: ubuntu-latest
+
+    # optional: only publish from homework_22, not from forks, etc.
+    if: github.ref == 'refs/heads/homework_22'
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Download Allure report artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: allure-report-*
+          path: ./public
+          merge-multiple: true
+
+      # public now contains:
+      #   public/qa_homework_eighteen/allure-report/bookstore/index.html
+      #   public/qa_homework_eighteen/allure-report/book/index.html
+      #   public/qa_homework_eighteen/allure-report/login/index.html
+
+      - name: Create index.html with links
+        run: |
+          mkdir -p public
+          cat > public/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <title>Allure reports</title>
+          </head>
+          <body>
+            <h1>Allure reports</h1>
+            <ul>
+              <li><a href="qa_homework_eighteen/allure-report/bookstore/index.html">Bookstore suite</a></li>
+              <li><a href="qa_homework_eighteen/allure-report/book/index.html">Book suite</a></li>
+              <li><a href="qa_homework_eighteen/allure-report/login/index.html">Login suite</a></li>
+            </ul>
+          </body>
+          </html>
+          EOF
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
