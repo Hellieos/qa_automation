@@ -2,9 +2,19 @@ name: Playwright Matrix + Allure
 
 on:
   push:
-    branches: [ main, homework_22 ]
+    branches:
+      - main
+      - homework_22
+    paths:
+      - 'qa_homework_eighteen/**'
+      - '.github/workflows/playwright-matrix-allure.yml'
   pull_request:
-    branches: [ main, homework_22 ]
+    branches:
+      - main
+      - homework_22
+    paths:
+      - 'qa_homework_eighteen/**'
+      - '.github/workflows/playwright-matrix-allure.yml'
 
 jobs:
   playwright-tests:

@@ -32,3 +32,12 @@ src/**/*.d.ts
 # Pact
 .pacts
 pacts
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/
+/allure-results
+/allure-report
