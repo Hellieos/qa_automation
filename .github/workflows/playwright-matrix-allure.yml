@@ -3,14 +3,14 @@ name: Playwright Matrix + Allure
 on:
   push:
     branches:
-      - main
+      #- main
       - homework_22
     paths:
       - 'qa_homework_eighteen/**'
       - '.github/workflows/playwright-matrix-allure.yml'
   pull_request:
     branches:
-      - main
+      #- main
       - homework_22
     paths:
       - 'qa_homework_eighteen/**'
@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-${{ matrix.suite }}
-          # 👇 path is from repo root, so include subfolder
+          # path is from repo root, so include subfolder
           path: qa_homework_eighteen/allure-results
           retention-days: 30
 
@@ -81,6 +81,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-${{ matrix.suite }}
-          # 👇 same here – prefix with project folder
+          # same here – prefix with project folder
           path: qa_homework_eighteen/allure-report/${{ matrix.suite }}
           retention-days: 30
