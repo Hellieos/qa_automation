@@ -40,7 +40,7 @@ npm run report:login
 
 ## Report Locations
 
-Each report is generated under:
+- Each report is generated under:
 
 allure-report/
   all/
