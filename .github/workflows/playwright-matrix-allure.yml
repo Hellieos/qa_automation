@@ -24,6 +24,11 @@ jobs:
     defaults:
       run:
         working-directory: qa_homework_eighteen
+    
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+      LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
+      LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
 
     strategy:
       matrix:
