@@ -6,18 +6,33 @@
   "author": "",
   "type": "commonjs",
   "main": "index.js",
-  "scripts": {
-    "test": "playwright test",
-    "test:bookstore": "playwright test tests/bookstore-list.spec.ts",
-    "test:book": "playwright test tests/book-details-cart.spec.ts",
-    "test:login": "playwright test tests/login.spec.ts"
-  },
+"scripts": {
+  "test": "playwright test",
+  "test:allure": "playwright test",
+
+  "allure:generate": "allure generate ./allure-results --clean -o ./allure-report",
+  "allure:open": "allure open ./allure-report",
+
+  "test:bookstore": "playwright test tests/bookstore-list.spec.ts --output=./test-results/bookstore",
+  "report:bookstore": "allure generate ./allure-results --clean -o ./allure-report/bookstore && allure open ./allure-report/bookstore",
+
+  "test:book": "playwright test tests/book-details-cart.spec.ts --output=./test-results/book",
+  "report:book": "allure generate ./allure-results --clean -o ./allure-report/book && allure open ./allure-report/book",
+
+  "test:login": "playwright test tests/login.spec.ts --output=./test-results/login",
+  "report:login": "allure generate ./allure-results --clean -o ./allure-report/login && allure open ./allure-report/login",
+
+  "test:all": "playwright test",
+  "report:all": "allure generate ./allure-results --clean -o ./allure-report/all && allure open ./allure-report/all"
+},
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@playwright/test": "^1.57.0",
     "@stylistic/eslint-plugin": "^5.6.1",
     "@stylistic/eslint-plugin-ts": "^4.4.1",
     "@types/node": "^24.10.1",
+    "allure-commandline": "^2.35.1",
+    "allure-playwright": "^3.4.3",
     "eslint": "^9.39.1",
     "eslint-plugin-prettier": "^5.5.4",
     "eslint-plugin-unicorn": "^62.0.0",

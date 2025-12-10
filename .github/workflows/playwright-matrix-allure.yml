@@ -1,0 +1,154 @@
+name: Playwright Matrix + Allure
+
+on:
+  push:
+    branches:
+      #- main
+      - homework_22
+    paths:
+      - 'qa_homework_eighteen/**'
+      - '.github/workflows/playwright-matrix-allure.yml'
+  pull_request:
+    branches:
+      #- main
+      - homework_22
+    paths:
+      - 'qa_homework_eighteen/**'
+      - '.github/workflows/playwright-matrix-allure.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  playwright-tests:
+    runs-on: ubuntu-latest
+
+    # all `run:` commands in this job will execute in qa_homework_eighteen
+    defaults:
+      run:
+        working-directory: qa_homework_eighteen
+    
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+      LOGIN_USERNAME: ${{ secrets.LOGIN_USERNAME }}
+      LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
+
+    strategy:
+      matrix:
+        suite: [ "bookstore", "book", "login" ]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: "Run test suite: ${{ matrix.suite }}"
+        run: npm run test:${{ matrix.suite }}
+
+      - name: Install Allure CLI
+        run: npm install -g allure-commandline --save-dev
+
+      - name: Generate Allure report for ${{ matrix.suite }}
+        run: |
+          mkdir -p allure-report/${{ matrix.suite }}
+          allure generate ./allure-results --clean -o ./allure-report/${{ matrix.suite }}
+
+      - name: Upload allure-results (${{ matrix.suite }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-${{ matrix.suite }}
+          path: qa_homework_eighteen/allure-results
+          retention-days: 30
+
+      - name: Upload allure-report (${{ matrix.suite }})
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report-${{ matrix.suite }}
+          path: qa_homework_eighteen/allure-report/${{ matrix.suite }}
+          retention-days: 30
+
+  # pages
+  publish-allure:
+    needs: playwright-tests
+    runs-on: ubuntu-latest
+
+    # only publish from homework_22
+    if: github.ref == 'refs/heads/homework_22'
+
+    # hook this job to the GitHub Pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Download Allure report (bookstore)
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-report-bookstore
+          path: public/bookstore
+
+      - name: Download Allure report (book)
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-report-book
+          path: public/book
+
+      - name: Download Allure report (login)
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-report-login
+          path: public/login
+
+      - name: Create index.html with links
+        run: |
+          mkdir -p public
+          cat > public/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8" />
+            <title>Allure reports</title>
+          </head>
+          <body>
+            <h1>Allure reports</h1>
+            <ul>
+              <li><a href="bookstore/index.html">Bookstore suite</a></li>
+              <li><a href="book/index.html">Book suite</a></li>
+              <li><a href="login/index.html">Login suite</a></li>
+            </ul>
+          </body>
+          </html>
+          EOF
+
+      # configure Pages (required before deploy-pages)
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
