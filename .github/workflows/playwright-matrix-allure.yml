@@ -101,12 +101,23 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Download Allure report artifacts
+      - name: Download Allure report (bookstore)
         uses: actions/download-artifact@v4
         with:
-          pattern: allure-report-*
-          path: ./public
-          merge-multiple: true
+          name: allure-report-bookstore
+          path: public/bookstore
+
+      - name: Download Allure report (book)
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-report-book
+          path: public/book
+
+      - name: Download Allure report (login)
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-report-login
+          path: public/login
 
       - name: Create index.html with links
         run: |
@@ -121,9 +132,9 @@ jobs:
           <body>
             <h1>Allure reports</h1>
             <ul>
-              <li><a href="qa_homework_eighteen/allure-report/bookstore/index.html">Bookstore suite</a></li>
-              <li><a href="qa_homework_eighteen/allure-report/book/index.html">Book suite</a></li>
-              <li><a href="qa_homework_eighteen/allure-report/login/index.html">Login suite</a></li>
+              <li><a href="bookstore/index.html">Bookstore suite</a></li>
+              <li><a href="book/index.html">Book suite</a></li>
+              <li><a href="login/index.html">Login suite</a></li>
             </ul>
           </body>
           </html>
