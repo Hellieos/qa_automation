@@ -59,48 +59,43 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      # Запуск одного з трьох наборів тестів:
-      # npm run test:bookstore
-      # npm run test:book
-      # npm run test:login
       - name: "Run test suite: ${{ matrix.suite }}"
         run: npm run test:${{ matrix.suite }}
 
-      # Встановлюю Allure CLI (щоб генерувати репорт у CI)
       - name: Install Allure CLI
         run: npm install -g allure-commandline --save-dev
 
-      # Генерую Allure репорт для кожного suite в окрему папку
       - name: Generate Allure report for ${{ matrix.suite }}
         run: |
           mkdir -p allure-report/${{ matrix.suite }}
           allure generate ./allure-results --clean -o ./allure-report/${{ matrix.suite }}
 
-      # Зберігаю сирі allure-results як artifact
       - name: Upload allure-results (${{ matrix.suite }})
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-${{ matrix.suite }}
-          # path is from repo root, so include subfolder
           path: qa_homework_eighteen/allure-results
           retention-days: 30
 
-      # Зберігаю готовий HTML-репорт як artifact
       - name: Upload allure-report (${{ matrix.suite }})
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-${{ matrix.suite }}
-          # same here – prefix with project folder
           path: qa_homework_eighteen/allure-report/${{ matrix.suite }}
           retention-days: 30
 
-# pages job
+  # pages
   publish-allure:
     needs: playwright-tests
     runs-on: ubuntu-latest
 
-    # optional: only publish from homework_22, not from forks, etc.
+    # only publish from homework_22
     if: github.ref == 'refs/heads/homework_22'
+
+    # hook this job to the GitHub Pages environment
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout repo
@@ -112,11 +107,6 @@ jobs:
           pattern: allure-report-*
           path: ./public
           merge-multiple: true
-
-      # public now contains:
-      #   public/qa_homework_eighteen/allure-report/bookstore/index.html
-      #   public/qa_homework_eighteen/allure-report/book/index.html
-      #   public/qa_homework_eighteen/allure-report/login/index.html
 
       - name: Create index.html with links
         run: |
@@ -138,6 +128,10 @@ jobs:
           </body>
           </html>
           EOF
+
+      # configure Pages (required before deploy-pages)
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v4
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
