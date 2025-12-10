@@ -20,6 +20,11 @@ jobs:
   playwright-tests:
     runs-on: ubuntu-latest
 
+    # all `run:` commands in this job will execute in qa_homework_eighteen
+    defaults:
+      run:
+        working-directory: qa_homework_eighteen
+
     strategy:
       matrix:
         suite: [ "bookstore", "book", "login" ]
@@ -62,7 +67,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-results-${{ matrix.suite }}
-          path: allure-results
+          # 👇 path is from repo root, so include subfolder
+          path: qa_homework_eighteen/allure-results
           retention-days: 30
 
       # Зберігаю готовий HTML-репорт як artifact
@@ -70,5 +76,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-${{ matrix.suite }}
-          path: allure-report/${{ matrix.suite }}
+          # 👇 same here – prefix with project folder
+          path: qa_homework_eighteen/allure-report/${{ matrix.suite }}
           retention-days: 30
