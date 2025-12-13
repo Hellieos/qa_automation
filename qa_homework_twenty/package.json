@@ -8,7 +8,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "test:cucumber": "npm run build && cucumber-js --require ./build/step-definitions/login.steps.js"
+    "test:cucumber": "npm run build && cucumber-js \"features/**/*.feature\" --require \"build/src/**/*.js\""
   },
   "devDependencies": {
     "@cucumber/cucumber": "^12.3.0",

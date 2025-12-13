@@ -1,9 +1,10 @@
 {
   "include": [
-    "step-definitions/**/*.ts",
-    "pages/**/*.ts",
+    "src/steps/**/*.ts",
+    "src/pages/**/*.ts",
     "features/**/*.ts",
-    "*.ts"
+    "*.ts",
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",

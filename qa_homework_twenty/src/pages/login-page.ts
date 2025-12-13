@@ -3,6 +3,10 @@ import { Page, Locator, expect } from '@playwright/test';
 export class LoginPage {
     private readonly page: Page;
 
+    private readonly successLoginMessage = 'You logged into a secure area!';
+    private readonly invalidUsernameMessage = 'Your username is invalid!';
+    private readonly loggedOutMessage = 'You logged out of the secure area!';
+
     public constructor(page: Page) {
         this.page = page;
     }
@@ -28,7 +32,8 @@ export class LoginPage {
     }
 
     public async goto(): Promise<void> {
-        await this.page.goto('https://practice.expandtesting.com/login');
+        const baseUrl = process.env.BASE_URL;
+        await this.page.goto(`${baseUrl}/login`);
     }
 
     public async login(username: string, password: string): Promise<void> {
@@ -37,11 +42,26 @@ export class LoginPage {
         await this.loginButton.click();
     }
 
-    public async assertFlashContains(text: string): Promise<void> {
+    private async assertFlashContains(text: string): Promise<void> {
         await expect(this.flashMessage).toContainText(text);
+    }
+
+    public async assertLoginSuccess(): Promise<void> {
+        await this.assertFlashContains(this.successLoginMessage);
+        await expect(this.page).toHaveURL(/\/secure/);
+    }
+
+    public async assertInvalidUsername(): Promise<void> {
+        await this.assertFlashContains(this.invalidUsernameMessage);
+        await expect(this.page).toHaveURL(/\/login/);
     }
 
     public async logout(): Promise<void> {
         await this.logoutButton.click();
+    }
+
+    public async assertLoggedOut(): Promise<void> {
+        await this.assertFlashContains(this.loggedOutMessage);
+        await expect(this.page).toHaveURL(/\/login/);
     }
 }
